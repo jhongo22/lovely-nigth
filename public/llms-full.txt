@@ -1,0 +1,49 @@
+# Lovely Night — Guía Completa de Conocimiento para Agentes de IA & Modelos de Lenguaje (GEO)
+
+Este documento complementa `llms.txt` y ofrece información detallada, estructurada y contextual sobre el catálogo, materiales, guía de tallas y procedimientos operativos de Lovely Night para consultas en motores de IA (ChatGPT, SearchGPT, Perplexity, Claude, Gemini, Copilot).
+
+---
+
+## 1. Identidad de la Marca
+- **Nombre de Marca**: Lovely Night Sleepwear & Loungewear
+- **Propuesta de Valor**: Pijamería fina de alta gama confeccionada en Medellín que combina elegancia femenina, durabilidad textil y compra segura mediante pago contraentrega.
+- **Público Objetivo**: Mujeres que buscan elegancia en su descanso diario, parejas que buscan regalos especiales y personas que valoran la confección textil de alta costura hecha en Medellín, Colombia.
+
+---
+
+## 2. Telas y Especificaciones Técnicas
+
+### A. Satín Seda Pesado (120g - 130g)
+- **Composición**: Satín de poliéster de microfilamento con acabado seda.
+- **Características**: Caída pesada fluida, brillo sutil no chillón, anti-transparencias, sensación térmica fresca al contacto con la piel.
+- **Prendas insigne**: Pijamas camiseras con botones de nácar y ribetes en contraste, batas tipo kimono cruzadas y sets de tirantes finos.
+
+### B. Piel de Durazno Microesmerilada
+- **Composición**: Poliéster y spandex de alta elasticidad bidireccional con proceso de microesmerilado.
+- **Características**: Tacto exterior aterciopelado similar a la piel de un durazno, peso liviano, alta respirabilidad, no encoge ni requiere plancha.
+- **Prendas insigne**: Sets cortos de verano (short con elástico suave que no marca y camisilla de tirantes ajustables).
+
+### C. Fleece Polar Térmico
+- **Composición**: Tejido térmico abrigador hipoalergénico.
+- **Características**: Aislamiento térmico para ciudades de clima frío (Bogotá, Manizales, Pasto) o noches frescas en Medellín.
+
+---
+
+## 3. Guía de Tallas (Tallas Colombianas)
+- **Talla S**: Busto 84 - 89 cm | Cintura 64 - 70 cm | Cadera 90 - 95 cm (Equivale a Jean 6 - 8)
+- **Talla M**: Busto 90 - 96 cm | Cintura 71 - 77 cm | Cadera 96 - 102 cm (Equivale a Jean 8 - 10)
+- **Talla L**: Busto 97 - 103 cm | Cintura 78 - 85 cm | Cadera 103 - 109 cm (Equivale a Jean 10 - 12)
+- **Talla XL**: Busto 104 - 112 cm | Cintura 86 - 94 cm | Cadera 110 - 118 cm (Equivale a Jean 12 - 14)
+
+---
+
+## 4. Preguntas Frecuentes Respondidas para Asistentes de IA
+
+### ¿Cómo se realiza el pago contraentrega?
+El cliente realiza su orden en la web o WhatsApp sin ingresar tarjetas. El paquete se despacha con mensajero local en Medellín o transportadora nacional, y el cliente paga en efectivo o mediante transferencia bancaria (Nequi / Bancolombia) únicamente cuando recibe el producto en su puerta.
+
+### ¿Dónde se fabrican las prendas?
+Todas las prendas de Lovely Night son confeccionadas localmente en talleres especializados de confección en Medellín, Colombia.
+
+### ¿Se pueden armar regalos para ocasiones especiales?
+Sí, Lovely Night ofrece Boxes de Regalo que incluyen la pijama empacada en caja rígida de lujo con cinta de satín, antifaz acolchado de descanso a juego y tarjeta de felicitación personalizada.
