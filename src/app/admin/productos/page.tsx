@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { useStoreData } from '@/context/StoreDataContext';
 import {
   Package,
@@ -37,13 +38,13 @@ export default function AdminProductosPage() {
   // Form State Ultra-Flexible
   const [name, setName] = useState('');
   const [slug, setSlug] = useState('');
-  const [gender, setGender] = useState<ProductGender>('Mujer');
+  const [gender, setGender] = useState<string>('Mujer');
   const [tagline, setTagline] = useState('');
   const [description, setDescription] = useState('');
   const [detailsText, setDetailsText] = useState('');
   const [fabric, setFabric] = useState('Satín Seda');
   const [category, setCategory] = useState('pijamas-camiseras');
-  const [collectionSlug, setCollectionSlug] = useState('satin-seda');
+  const [collectionSlug, setCollectionSlug] = useState('');
   const [price, setPrice] = useState(0);
   const [comparePrice, setComparePrice] = useState<number | undefined>(undefined);
   const [costPrice, setCostPrice] = useState(0);
@@ -54,6 +55,31 @@ export default function AdminProductosPage() {
   const [badgesText, setBadgesText] = useState('');
   const [featured, setFeatured] = useState(true);
   const [isCombo, setIsCombo] = useState(false);
+
+  // Listas dinámicas y auto-expandibles de públicos y telas
+  const standardGenders: string[] = ['Mujer', 'Hombre', 'Unisex', 'Infantil / Niñas', 'Novias / Nupcial', 'Maternidad', 'Parejas Dúo'];
+  const allGenders: string[] = Array.from(
+    new Set([...standardGenders, ...products.map((p) => p.gender).filter((g): g is string => Boolean(g))])
+  );
+
+  const standardFabrics: string[] = [
+    'Satín Seda',
+    'Piel de Durazno',
+    'Térmica Polar',
+    'Algodón Pima',
+    'Modal / Rib',
+    'Lino / Viscosa',
+    'Seda Francesa',
+    'Chalis',
+    'Encaje',
+  ];
+  const allFabrics: string[] = Array.from(
+    new Set([
+      ...standardFabrics,
+      ...products.map((p) => p.fabric).filter((f): f is string => Boolean(f)),
+      ...categories.map((c) => c.fabric).filter((f): f is string => Boolean(f)),
+    ])
+  );
 
   // Matriz de Variantes de Stock (Talla, Color, Hex, SKU, Stock)
   const [variants, setVariants] = useState<ProductVariant[]>([
@@ -70,8 +96,8 @@ export default function AdminProductosPage() {
     setDescription('');
     setDetailsText('');
     setFabric('Satín Seda');
-    setCategory('pijamas-camiseras');
-    setCollectionSlug('satin-seda');
+    setCategory(categories[0]?.slug || 'pijamas-camiseras');
+    setCollectionSlug('');
     setPrice(0);
     setComparePrice(undefined);
     setCostPrice(0);
@@ -95,13 +121,13 @@ export default function AdminProductosPage() {
     setEditingId(p.id);
     setName(p.name);
     setSlug(p.slug);
-    setGender((p.gender as ProductGender) || 'Mujer');
+    setGender(p.gender || 'Mujer');
     setTagline(p.tagline || '');
     setDescription(p.description);
     setDetailsText(p.details.join('\n'));
     setFabric(p.fabric);
     setCategory(p.category);
-    setCollectionSlug(p.collectionSlug || 'satin-seda');
+    setCollectionSlug(p.collectionSlug || '');
     setPrice(p.price);
     setComparePrice(p.comparePrice);
     setCostPrice(p.costPrice);
@@ -339,17 +365,16 @@ export default function AdminProductosPage() {
         {/* Filtro por Género / Público */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <User size={15} style={{ color: '#78716C' }} />
-          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#57534E' }}>Género:</span>
+          <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#57534E' }}>Público:</span>
           <select
             value={genderFilter}
             onChange={(e) => setGenderFilter(e.target.value)}
             style={{ padding: '0.5rem 0.75rem', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.82rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
           >
             <option value="ALL">Todos los Públicos</option>
-            <option value="Mujer">Dama / Mujer</option>
-            <option value="Hombre">Hombre / Loungewear</option>
-            <option value="Unisex">Unisex / Dúos</option>
-            <option value="Infantil / Niñas">Infantil / Niñas</option>
+            {allGenders.map((g) => (
+              <option key={g} value={g}>{g}</option>
+            ))}
           </select>
         </div>
 
@@ -363,11 +388,9 @@ export default function AdminProductosPage() {
             style={{ padding: '0.5rem 0.75rem', borderRadius: '8px', border: '1px solid #D1D5DB', fontSize: '0.82rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
           >
             <option value="ALL">Todas las Telas</option>
-            <option value="Satín Seda">Satín Seda</option>
-            <option value="Piel de Durazno">Piel de Durazno</option>
-            <option value="Térmica Polar">Térmica Polar</option>
-            <option value="Algodón Pima">Algodón Pima</option>
-            <option value="Modal / Rib">Modal / Rib</option>
+            {allFabrics.map((f) => (
+              <option key={f} value={f}>{f}</option>
+            ))}
           </select>
         </div>
       </div>
@@ -388,8 +411,8 @@ export default function AdminProductosPage() {
           </div>
 
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-            {/* A. Clasificación Maestra: Nombre, Género, Tela, Colección */}
-            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.25rem' }}>
+            {/* A. Clasificación Maestra: Nombre, Género, Tela, Categoría, Colección */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(230px, 1fr))', gap: '1.25rem' }}>
               <div>
                 <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem', color: '#1C1917' }}>
                   Nombre del Producto *
@@ -407,55 +430,162 @@ export default function AdminProductosPage() {
                 />
               </div>
 
+              {/* Público Objetivo / Género 100% Editable y con Sugerencias */}
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem', color: '#1C1917' }}>
-                  Género / Público Objetivo *
-                </label>
-                <select
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#1C1917' }}>
+                    Público Objetivo / Género *
+                  </label>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--admin-accent-primary)', fontWeight: 600 }}>
+                    ✏️ Escribe o Elige
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  list="gender-options"
+                  required
+                  placeholder="Ej: Mujer, Hombre, Parejas, Niñas..."
                   value={gender}
-                  onChange={(e) => setGender(e.target.value as ProductGender)}
+                  onChange={(e) => setGender(e.target.value)}
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '0.9rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
-                >
-                  <option value="Mujer">🌸 Mujer / Dama</option>
-                  <option value="Hombre">🎩 Hombre / Loungewear</option>
-                  <option value="Unisex">✨ Unisex / Parejas Dúo</option>
-                  <option value="Infantil / Niñas">🧸 Infantil / Niñas</option>
-                </select>
+                />
+                <datalist id="gender-options">
+                  {allGenders.map((g) => (
+                    <option key={g} value={g} />
+                  ))}
+                </datalist>
+                <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', marginTop: '0.4rem' }}>
+                  {allGenders.slice(0, 5).map((g) => (
+                    <button
+                      key={g}
+                      type="button"
+                      onClick={() => setGender(g)}
+                      style={{
+                        fontSize: '0.68rem',
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: '4px',
+                        border: '1px solid #E5E7EB',
+                        backgroundColor: gender.toLowerCase() === g.toLowerCase() ? '#FAF0ED' : '#FFFFFF',
+                        color: gender.toLowerCase() === g.toLowerCase() ? 'var(--admin-accent-primary)' : '#57534E',
+                        cursor: 'pointer',
+                        fontWeight: gender.toLowerCase() === g.toLowerCase() ? 700 : 500,
+                      }}
+                    >
+                      {g}
+                    </button>
+                  ))}
+                </div>
               </div>
 
+              {/* Tela / Material de Confección 100% Editable y con Sugerencias */}
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem', color: '#1C1917' }}>
-                  Tela / Material de Confección *
-                </label>
-                <select
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#1C1917' }}>
+                    Tela / Material Base *
+                  </label>
+                  <span style={{ fontSize: '0.68rem', color: 'var(--admin-accent-primary)', fontWeight: 600 }}>
+                    ✏️ Escribe o Elige
+                  </span>
+                </div>
+                <input
+                  type="text"
+                  list="fabric-options"
+                  required
+                  placeholder="Ej: Satín Seda, Piel de Durazno..."
                   value={fabric}
                   onChange={(e) => setFabric(e.target.value)}
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '0.9rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
-                >
-                  <option value="Satín Seda">Satín Seda (Alto Gramaje)</option>
-                  <option value="Piel de Durazno">Piel de Durazno (Microesmerilada)</option>
-                  <option value="Térmica Polar">Térmica Polar / Fleece</option>
-                  <option value="Algodón Pima">Algodón Pima Peruano</option>
-                  <option value="Modal / Rib">Modal / Rib Acanalado</option>
-                  <option value="Lino / Viscosa">Lino / Viscosa Natural</option>
-                </select>
+                />
+                <datalist id="fabric-options">
+                  {allFabrics.map((f) => (
+                    <option key={f} value={f} />
+                  ))}
+                </datalist>
+                <div style={{ display: 'flex', gap: '0.3rem', flexWrap: 'wrap', marginTop: '0.4rem' }}>
+                  {allFabrics.slice(0, 5).map((f) => (
+                    <button
+                      key={f}
+                      type="button"
+                      onClick={() => setFabric(f)}
+                      style={{
+                        fontSize: '0.68rem',
+                        padding: '0.15rem 0.45rem',
+                        borderRadius: '4px',
+                        border: '1px solid #E5E7EB',
+                        backgroundColor: fabric.toLowerCase() === f.toLowerCase() ? '#FAF0ED' : '#FFFFFF',
+                        color: fabric.toLowerCase() === f.toLowerCase() ? 'var(--admin-accent-primary)' : '#57534E',
+                        cursor: 'pointer',
+                        fontWeight: fabric.toLowerCase() === f.toLowerCase() ? 700 : 500,
+                      }}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
               </div>
 
+              {/* Categoría de Prenda */}
               <div>
-                <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', display: 'block', marginBottom: '0.35rem', color: '#1C1917' }}>
-                  Colección Asignada
-                </label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#1C1917' }}>
+                    Categoría de Prenda *
+                  </label>
+                  <Link href="/admin/categorias" target="_blank" style={{ fontSize: '0.7rem', color: 'var(--admin-accent-primary)', fontWeight: 700, textDecoration: 'underline' }}>
+                    + Nueva Categoría
+                  </Link>
+                </div>
+                <select
+                  value={category}
+                  onChange={(e) => setCategory(e.target.value)}
+                  style={{ width: '100%', padding: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '0.9rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
+                >
+                  {categories.length > 0 ? (
+                    categories.map((cat) => (
+                      <option key={cat.id || cat.slug} value={cat.slug}>
+                        {cat.name}
+                      </option>
+                    ))
+                  ) : (
+                    <>
+                      <option value="pijamas-camiseras">Pijamas Camiseras</option>
+                      <option value="sets-cortos">Sets Cortos</option>
+                      <option value="batas-kimonos">Batas & Kimonos</option>
+                      <option value="pijamas-termicas">Pijamas Térmicas</option>
+                      <option value="combos-regalo">Combos & Regalos</option>
+                      <option value="hombre-loungewear">Hombre & Loungewear</option>
+                    </>
+                  )}
+                </select>
+                <span style={{ fontSize: '0.7rem', color: '#78716C', display: 'block', marginTop: '0.25rem' }}>
+                  Define el menú principal de la tienda.
+                </span>
+              </div>
+
+              {/* Colección Asignada */}
+              <div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
+                  <label style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', color: '#1C1917' }}>
+                    Colección de Temporada
+                  </label>
+                  <Link href="/admin/colecciones" target="_blank" style={{ fontSize: '0.7rem', color: 'var(--admin-accent-primary)', fontWeight: 700, textDecoration: 'underline' }}>
+                    + Nueva Colección
+                  </Link>
+                </div>
                 <select
                   value={collectionSlug}
                   onChange={(e) => setCollectionSlug(e.target.value)}
                   style={{ width: '100%', padding: '0.75rem', border: '1px solid #D1D5DB', borderRadius: '8px', fontSize: '0.9rem', backgroundColor: '#FFFFFF', fontWeight: 600 }}
                 >
+                  <option value="">(Ninguna - Catálogo General)</option>
                   {collections.map((col) => (
-                    <option key={col.slug} value={col.slug}>
-                      {col.name}
+                    <option key={col.id || col.slug} value={col.slug}>
+                      {col.badge ? `[${col.badge}] ` : ''}{col.name}
                     </option>
                   ))}
                 </select>
+                <span style={{ fontSize: '0.7rem', color: '#78716C', display: 'block', marginTop: '0.25rem' }}>
+                  Para lanzamientos temáticos (ej: Novias, Amor y Amistad).
+                </span>
               </div>
             </div>
 

@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, ShoppingCart, Package, DollarSign, Gift, Store, Shield } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Package, DollarSign, Gift, Store, Shield, Layers, Tag } from 'lucide-react';
 
 export default function AdminSidebar() {
   const pathname = usePathname();
@@ -12,6 +12,8 @@ export default function AdminSidebar() {
     { label: 'Dashboard & KPIs', href: '/admin', icon: LayoutDashboard },
     { label: 'Gestión de Pedidos', href: '/admin/pedidos', icon: ShoppingCart },
     { label: 'Catálogo & Stock', href: '/admin/productos', icon: Package },
+    { label: 'Colecciones', href: '/admin/colecciones', icon: Layers },
+    { label: 'Categorías', href: '/admin/categorias', icon: Tag },
     { label: 'Combos & Regalos', href: '/admin/combos', icon: Gift },
     { label: 'Liquidación & Costos', href: '/admin/liquidacion', icon: DollarSign },
   ];
