@@ -54,18 +54,18 @@ export default function HeroCarousel() {
   const finalSlides = slides.length > 0 ? slides : [
     {
       id: 'fallback-1',
-      badge: 'Nueva Colección • Satín & Seda',
+      badge: 'Boutique Oficial • Medellín',
       title: 'Pijamas en satín seda que abrazan tu piel con delicadeza.',
-      subtitle: 'Confección 100% en Medellín con telas de alto gramaje y acabados finos. Pide con Pago Contraentrega.',
-      ctaText: 'Ver Colección Satín',
-      ctaLink: '/mujer',
-      secondaryCtaText: 'Ver Todo',
+      subtitle: 'Confección 100% en Medellín con telas de alto gramaje y acabados finos. Próximamente nuevas prendas disponibles con Pago Contraentrega.',
+      ctaText: 'Asesoría por WhatsApp',
+      ctaLink: 'https://wa.me/573000000000?text=Hola%20Lovely%20Night,%20quiero%20conocer%20la%20nueva%20colección',
+      secondaryCtaText: 'Ver Catálogo',
       secondaryCtaLink: '/mujer',
-      image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200',
+      image: '/imagenes/logo_circular_sin_fondo.png',
       tag: 'Hecho en Medellín 🇨🇴',
-      overlayBadge: '✨ Satín Seda Pesado 120g',
-      overlayButtonText: 'Ver Catálogo',
-      overlayButtonLink: '/mujer',
+      overlayBadge: '🌙 Dulces Sueños • Lovely Night',
+      overlayButtonText: 'Pedir por WhatsApp',
+      overlayButtonLink: 'https://wa.me/573000000000',
     },
   ];
 
@@ -116,7 +116,7 @@ export default function HeroCarousel() {
     <section
       style={{
         position: 'relative',
-        backgroundColor: '#FAF8F5',
+        backgroundColor: '#fdf6f0',
         borderBottom: '1px solid rgba(28, 28, 28, 0.08)',
         overflow: 'hidden',
         width: '100%',
@@ -395,7 +395,7 @@ export default function HeroCarousel() {
               <span>Entrega 24h Medellín</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <ShieldCheck size={16} strokeWidth={2} style={{ color: '#C2A676' }} />
+              <ShieldCheck size={16} strokeWidth={2} style={{ color: '#dbbb92' }} />
               <span>Telas No Transparentan</span>
             </div>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>

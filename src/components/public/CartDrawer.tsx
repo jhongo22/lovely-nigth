@@ -216,7 +216,7 @@ export default function CartDrawer() {
         <div
           style={{
             padding: '0.9rem 1.5rem',
-            backgroundColor: '#FAF8F5',
+            backgroundColor: '#fdf6f0',
             borderBottom: '1px solid rgba(28, 28, 28, 0.08)',
           }}
         >
@@ -569,7 +569,7 @@ export default function CartDrawer() {
                 width: '70px',
                 height: '70px',
                 borderRadius: '50%',
-                backgroundColor: '#FAF8F5',
+                backgroundColor: '#fdf6f0',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
@@ -601,7 +601,7 @@ export default function CartDrawer() {
                     gap: '1rem',
                     padding: '0.85rem',
                     borderRadius: '12px',
-                    backgroundColor: '#FAF8F5',
+                    backgroundColor: '#fdf6f0',
                     border: '1px solid rgba(28, 28, 28, 0.06)',
                     transition: 'all 0.2s ease',
                   }}

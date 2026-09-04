@@ -6,79 +6,8 @@ import { INITIAL_PRODUCTS } from '@/data/initialProducts';
 import { INITIAL_ORDERS } from '@/data/initialOrders';
 import { supabase } from '@/lib/supabaseClient';
 
-export const initialCollections: CollectionItem[] = [
-  {
-    id: 'col-1',
-    name: 'Colección Noches de Satín & Seda',
-    slug: 'satin-seda',
-    description: 'Pijamas camiseras clásicas y batas fluidas de satín de alto gramaje con caída suave.',
-    image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800&auto=format&fit=crop',
-    badge: 'BESTSELLER',
-    featured: true,
-  },
-  {
-    id: 'col-2',
-    name: 'Colección Frescura Piel de Durazno',
-    slug: 'piel-de-durazno',
-    description: 'Sets cortos juveniles y camisillas frescas de tacto microesmerilado aterciopelado.',
-    image: 'https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?q=80&w=800&auto=format&fit=crop',
-    badge: 'FAVORITAS',
-    featured: true,
-  },
-  {
-    id: 'col-3',
-    name: 'Colección Clima Frío & Térmicas',
-    slug: 'termicas',
-    description: 'Pijamas de fleece térmico suave, joggers abrigados y sacos para noches frías.',
-    image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=800&auto=format&fit=crop',
-    badge: 'ABRIGO',
-    featured: true,
-  },
-  {
-    id: 'col-4',
-    name: 'Boxes & Sets de Regalo',
-    slug: 'combos-regalo',
-    description: 'Cajas rígidas de lujo con antifaz, lazo de satín y tarjeta personalizada.',
-    image: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800&auto=format&fit=crop',
-    badge: 'REGALOS',
-    featured: true,
-  },
-];
-
-export const initialCategories: CategoryItem[] = [
-  {
-    id: 'cat-1',
-    name: 'Pijamas Camiseras',
-    slug: 'pijamas-camiseras',
-    description: 'Elegancia clásica con botones y ribete en contraste.',
-    fabric: 'Satín Seda',
-    image: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600',
-  },
-  {
-    id: 'cat-2',
-    name: 'Sets Cortos de Tirantes',
-    slug: 'sets-cortos',
-    description: 'Comodidad fresca de dos piezas con short.',
-    fabric: 'Piel de Durazno',
-    image: 'https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?q=80&w=600',
-  },
-  {
-    id: 'cat-3',
-    name: 'Batas & Kimonos',
-    slug: 'batas-kimonos',
-    description: 'Batas fluidas para descanso y rituales de belleza.',
-    fabric: 'Satín Seda',
-    image: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600',
-  },
-  {
-    id: 'cat-4',
-    name: 'Pijamas Térmicas Polar',
-    slug: 'pijamas-termicas',
-    description: 'Abrigo suave para climas fríos.',
-    fabric: 'Térmica Polar',
-    image: 'https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=600',
-  },
-];
+export const initialCollections: CollectionItem[] = [];
+export const initialCategories: CategoryItem[] = [];
 
 interface StoreDataContextType {
   products: Product[];
@@ -208,7 +137,7 @@ export const StoreDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!pErr && dbProducts && dbProducts.length > 0) {
+      if (!pErr && dbProducts) {
         setProducts(dbProducts.map(mapDbToProduct));
       }
 
@@ -218,7 +147,7 @@ export const StoreDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         .select('*')
         .order('created_at', { ascending: true });
 
-      if (!colErr && dbCollections && dbCollections.length > 0) {
+      if (!colErr && dbCollections) {
         setCollections(
           dbCollections.map((c: any) => ({
             id: c.id,
@@ -238,7 +167,7 @@ export const StoreDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         .select('*')
         .order('created_at', { ascending: true });
 
-      if (!catErr && dbCategories && dbCategories.length > 0) {
+      if (!catErr && dbCategories) {
         setCategories(
           dbCategories.map((cat: any) => ({
             id: cat.id,
@@ -257,7 +186,7 @@ export const StoreDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         .select('*')
         .order('created_at', { ascending: false });
 
-      if (!ordErr && dbOrders && dbOrders.length > 0) {
+      if (!ordErr && dbOrders) {
         setOrders(dbOrders.map(mapDbToOrder));
       }
     } catch (e) {
@@ -277,6 +206,9 @@ export const StoreDataProvider: React.FC<{ children: React.ReactNode }> = ({ chi
         fetchData();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'collections' }, () => {
+        fetchData();
+      })
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'categories' }, () => {
         fetchData();
       })
       .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {

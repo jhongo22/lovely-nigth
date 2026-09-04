@@ -16,7 +16,6 @@ import {
   Ruler,
   Check,
   CheckCircle2,
-  Camera,
   ArrowRight,
   Heart,
   Share2,
@@ -86,38 +85,7 @@ export default function ProductDetailPage() {
   };
 
   // Testimonios con foto real de clienta Y foto del producto recibido
-  const productReviews = [
-    {
-      author: 'Laura Camila Osorio',
-      city: 'El Poblado, Medellín',
-      date: 'Hace 3 días',
-      rating: 5,
-      comment: 'Es la pijama más suave que tengo. El satín no calienta, la caída es hermosa y los acabados de las costuras son impecables. La textura perlada es un sueño.',
-      avatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop',
-      tag: 'Foto de Prenda Recibida',
-    },
-    {
-      author: 'Sofía Echeverri',
-      city: 'Envigado',
-      date: 'Hace 1 semana',
-      rating: 5,
-      comment: 'Tenía dudas con la talla y la guía de medidas en centímetros me ayudó muchísimo. Pedí talla M y me quedó perfecta. 100% recomendada.',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop',
-      tag: 'Detalle de Costura & Tela',
-    },
-    {
-      author: 'Diana Marcela Vélez',
-      city: 'Laureles, Medellín',
-      date: 'Hace 2 semanas',
-      rating: 5,
-      comment: 'La presentación en la que viene empacada es espectacular para regalo. Ya es la segunda que compro este mes para obsequiar.',
-      avatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop',
-      tag: 'Empaque de Regalo con Lazo',
-    }
-  ];
+
 
   // Productos relacionados
   const relatedProducts = products.filter((p) => p.id !== product.id).slice(0, 3);
@@ -186,7 +154,7 @@ export default function ProductDetailPage() {
   };
 
   return (
-    <div style={{ padding: '2rem 0 5rem 0', backgroundColor: '#FAF8F5', minHeight: '85vh' }}>
+    <div style={{ padding: '2rem 0 5rem 0', backgroundColor: '#fdf6f0', minHeight: '85vh' }}>
       <JsonLd data={productSchema} />
 
       <div className="container">
@@ -372,7 +340,7 @@ export default function ProductDetailPage() {
                 <span><strong>Pago Contraentrega:</strong> Pagas cuando el mensajero entregue en tu puerta.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                <ShieldCheck size={18} style={{ color: '#C2A676' }} strokeWidth={1.75} />
+                <ShieldCheck size={18} style={{ color: '#dbbb92' }} strokeWidth={1.75} />
                 <span><strong>100% Hecho en Medellín:</strong> Confección con acabados de alta costura.</span>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -414,111 +382,98 @@ export default function ProductDetailPage() {
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-              <img
-                src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=600&auto=format&fit=crop"
-                alt="Detalle de Satín Seda"
-                style={{ width: '100%', height: '240px', objectFit: 'cover', borderRadius: '16px' }}
-              />
-              <img
-                src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=600&auto=format&fit=crop"
-                alt="Detalle de Confección"
-                style={{ width: '100%', height: '240px', objectFit: 'cover', borderRadius: '16px' }}
-              />
+              {product.images && product.images.length > 1 ? (
+                product.images.slice(1, 3).map((img, idx) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={idx}
+                    src={img}
+                    alt={`${product.name} detalle ${idx + 1}`}
+                    style={{ width: '100%', height: '240px', objectFit: 'cover', borderRadius: '16px' }}
+                  />
+                ))
+              ) : (
+                <div
+                  style={{
+                    gridColumn: '1 / -1',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    padding: '2rem',
+                    backgroundColor: '#FFFFFF',
+                    borderRadius: '16px',
+                    border: '1px dashed rgba(219, 187, 146, 0.4)',
+                  }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src="/imagenes/logo_circular_sin_fondo.png"
+                    alt="Lovely Night"
+                    style={{ width: '90px', height: '90px', objectFit: 'contain' }}
+                  />
+                </div>
+              )}
             </div>
           </div>
         </section>
 
-        {/* 4. SECCIÓN DE TESTIMONIOS CON FOTOS DE CLIENTAS Y PRODUCTO */}
-        <section style={{ marginBottom: '4rem' }}>
-          <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3.5rem auto' }}>
+        {/* 4. GARANTÍA Y COMPROMISO DE CALIDAD LOVELY NIGHT */}
+        <section
+          style={{
+            marginBottom: '4rem',
+            backgroundColor: '#FFFFFF',
+            borderRadius: '24px',
+            padding: '3rem 2rem',
+            border: '1px solid rgba(28, 28, 28, 0.08)',
+            boxShadow: '0 4px 20px rgba(0,0,0,0.03)',
+          }}
+        >
+          <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 2.5rem auto' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, letterSpacing: '0.12em', textTransform: 'uppercase', color: 'var(--accent-terra)' }}>
-              Opiniones & Fotos Reales de Clientas
+              Experiencia Lovely Night
             </span>
-            <h2 style={{ fontSize: '2.2rem', marginTop: '0.35rem', color: '#1C1C1C' }}>
-              Fotos reales de entregas en Medellín
+            <h2 style={{ fontSize: '2rem', marginTop: '0.35rem', color: '#1C1C1C' }}>
+              Garantía y Confianza en Cada Detalle
             </h2>
           </div>
 
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
               gap: '2rem',
+              textAlign: 'center',
             }}
           >
-            {productReviews.map((rev, i) => (
-              <div
-                key={i}
-                style={{
-                  backgroundColor: '#FFFFFF',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  border: '1px solid rgba(28, 28, 28, 0.08)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
-                }}
-              >
-                {/* Foto Real de la Prenda */}
-                <div style={{ position: 'relative', height: '210px', overflow: 'hidden', backgroundColor: '#EAE6E1' }}>
-                  <img
-                    src={rev.productPhoto}
-                    alt={rev.tag}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: '10px',
-                      left: '10px',
-                      backgroundColor: 'rgba(28, 28, 28, 0.85)',
-                      backdropFilter: 'blur(6px)',
-                      color: '#FFFFFF',
-                      padding: '0.25rem 0.65rem',
-                      borderRadius: '9999px',
-                      fontSize: '0.7rem',
-                      fontWeight: 700,
-                      display: 'flex',
-                      alignItems: 'center',
-                      gap: '0.3rem',
-                    }}
-                  >
-                    <Camera size={12} />
-                    <span>{rev.tag}</span>
-                  </div>
-                </div>
-
-                {/* Comentario y Perfil */}
-                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-                  <div>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
-                      <div style={{ display: 'flex', gap: '3px', color: '#F59E0B' }}>
-                        {[...Array(rev.rating)].map((_, starIdx) => (
-                          <Star key={starIdx} size={14} fill="#F59E0B" />
-                        ))}
-                      </div>
-                      <span style={{ fontSize: '0.72rem', color: 'var(--text-muted)' }}>{rev.date}</span>
-                    </div>
-
-                    <p style={{ fontSize: '0.9rem', color: '#444444', lineHeight: 1.6, fontStyle: 'italic', marginBottom: '1.25rem' }}>
-                      "{rev.comment}"
-                    </p>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid rgba(28, 28, 28, 0.08)' }}>
-                    <img
-                      src={rev.avatar}
-                      alt={rev.author}
-                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--accent-terra)' }}
-                    />
-                    <div>
-                      <h4 style={{ fontSize: '0.9rem', fontWeight: 700, color: '#1C1C1C' }}>{rev.author}</h4>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>📍 {rev.city} • Compradora Verificada ✓</span>
-                    </div>
-                  </div>
-                </div>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--accent-soft-pink)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Truck size={22} style={{ color: 'var(--accent-terra)' }} />
               </div>
-            ))}
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C1C1C' }}>Pago Contraentrega</h3>
+              <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: 1.5 }}>
+                Paga en efectivo o transferencia cuando recibas tu pedido en Medellín o cualquier ciudad de Colombia.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--accent-soft-pink)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldCheck size={22} style={{ color: 'var(--accent-terra)' }} />
+              </div>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C1C1C' }}>Garantía de Satisfacción</h3>
+              <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: 1.5 }}>
+                Confección de alta calidad con costuras reforzadas y telas suaves diseñadas para durar lavada tras lavada.
+              </p>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}>
+              <div style={{ width: '48px', height: '48px', borderRadius: '50%', backgroundColor: 'var(--accent-soft-pink)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <Sparkles size={22} style={{ color: 'var(--accent-terra)' }} />
+              </div>
+              <h3 style={{ fontSize: '1rem', fontWeight: 700, color: '#1C1C1C' }}>Empaque de Regalo</h3>
+              <p style={{ fontSize: '0.85rem', color: '#666', lineHeight: 1.5 }}>
+                Cada prenda se entrega en presentación boutique cuidada con papel de seda, fragancia de la marca y tarjeta.
+              </p>
+            </div>
           </div>
         </section>
 
@@ -587,7 +542,7 @@ export default function ProductDetailPage() {
             </p>
             <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
               <thead>
-                <tr style={{ borderBottom: '2px solid #1C1C1C', backgroundColor: '#FAF8F5' }}>
+                <tr style={{ borderBottom: '2px solid #1C1C1C', backgroundColor: '#fdf6f0' }}>
                   <th style={{ padding: '0.6rem' }}>Talla</th>
                   <th style={{ padding: '0.6rem' }}>Busto</th>
                   <th style={{ padding: '0.6rem' }}>Cintura</th>

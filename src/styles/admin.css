@@ -3,7 +3,7 @@
    ========================================================================== */
 
 :root {
-  --admin-bg-page: #FBF9F6;
+  --admin-bg-page: #fdf6f0;
   --admin-card-bg: #FFFFFF;
   --admin-sidebar-bg: #151413;
   --admin-border: #E8E5DF;
@@ -11,8 +11,9 @@
   --admin-text-primary: #1C1917;
   --admin-text-secondary: #78716C;
   --admin-text-tertiary: #A8A29E;
-  --admin-accent: #C27D6E;
-  --admin-accent-dark: #A86557;
+  --admin-accent: #dc9d9d;
+  --admin-accent-dark: #c98888;
+  --admin-gold: #dbbb92;
   --admin-success: #15803D;
   --admin-success-bg: #DCFCE7;
   --admin-danger: #DC2626;

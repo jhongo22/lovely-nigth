@@ -33,7 +33,7 @@ export default function Navbar() {
 
   const pathname = usePathname();
   const { totalItems, openCart } = useCart();
-  const { products, collections } = useStoreData();
+  const { products, collections, categories } = useStoreData();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -69,64 +69,29 @@ export default function Navbar() {
     setOpenAccordion(openAccordion === key ? null : key);
   };
 
-  // Categorías jerárquicas para el menú móvil estilo boutique (acordeones con +)
-  const mobileMenuStructure = [
-    {
-      id: 'pijamas',
-      label: 'PIJAMAS',
+  // Categorías jerárquicas dinámicas basadas 100% en la base de datos
+  const dynamicMenuStructure = categories.map((cat) => {
+    const catProducts = products.filter(
+      (p) =>
+        p.category?.toLowerCase() === cat.slug?.toLowerCase() ||
+        p.category?.toLowerCase() === cat.name?.toLowerCase() ||
+        p.fabric?.toLowerCase() === cat.fabric?.toLowerCase()
+    );
+    const uniqueFabrics = Array.from(new Set(catProducts.map((p) => p.fabric).filter(Boolean)));
+
+    return {
+      id: cat.id || cat.slug,
+      label: cat.name.toUpperCase(),
+      href: `/mujer?categoria=${cat.slug}`,
       subItems: [
-        { label: 'Ver Todas las Pijamas', href: '/mujer' },
-        { label: 'Satín Seda Clásicas', href: '/mujer/satin' },
-        { label: 'Piel de Durazno Frescas', href: '/mujer/piel-de-durazno' },
-        { label: 'Térmicas & Clima Frío', href: '/mujer/termicas' },
-        { label: 'Pijamas Camiseras', href: '/mujer' },
-        { label: 'Sets Cortos de Short', href: '/mujer/piel-de-durazno' },
+        { label: `Ver Todo en ${cat.name}`, href: `/mujer?categoria=${cat.slug}` },
+        ...uniqueFabrics.map((f) => ({
+          label: f,
+          href: `/mujer?categoria=${cat.slug}&tela=${encodeURIComponent(f)}`,
+        })),
       ],
-    },
-    {
-      id: 'vestidos-bano',
-      label: 'VESTIDOS DE BAÑO',
-      subItems: [
-        { label: 'Enterizos & Bikinis', href: '/mujer' },
-        { label: 'Salidas de Baño & Kimonos', href: '/mujer/satin' },
-      ],
-    },
-    {
-      id: 'ropa-interior',
-      label: 'ROPA INTERIOR',
-      subItems: [
-        { label: 'Bralettes & Tops Suaves', href: '/mujer' },
-        { label: 'Panties & Tangas Confort', href: '/mujer' },
-        { label: 'Bodys Modeladores', href: '/mujer' },
-      ],
-    },
-    {
-      id: 'ropa',
-      label: 'ROPA & LOUNGEWEAR',
-      subItems: [
-        { label: 'Batas & Kimonos de Seda', href: '/mujer/satin' },
-        { label: 'Joggers & Pantalones Relax', href: '/mujer/termicas' },
-        { label: 'Camisetas & Sacos Confort', href: '/mujer' },
-      ],
-    },
-    {
-      id: 'accesorios',
-      label: 'ACCESORIOS',
-      subItems: [
-        { label: 'Antifaces de Descanso en Satín', href: '/combos-regalo' },
-        { label: 'Scrunchies de Seda', href: '/combos-regalo' },
-        { label: 'Boxes Rígidas de Regalo Luxe', href: '/combos-regalo' },
-      ],
-    },
-    {
-      id: 'sale',
-      label: 'SALE / OFERTAS',
-      subItems: [
-        { label: 'Últimas Unidades con Descuento', href: '/mujer' },
-        { label: 'Combos & Packs 2x1 y 3x2', href: '/combos-regalo' },
-      ],
-    },
-  ];
+    };
+  });
 
   // Resultados de búsqueda en vivo
   const searchResults = searchQuery.trim() === ''
@@ -144,7 +109,7 @@ export default function Navbar() {
         style={{
           position: 'sticky',
           top: 0,
-          backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(250, 248, 245, 0.98)',
+          backgroundColor: isScrolled ? 'rgba(255, 255, 255, 0.98)' : 'rgba(253, 246, 240, 0.98)',
           backdropFilter: 'blur(10px)',
           borderBottom: '1px solid rgba(28, 28, 28, 0.08)',
           zIndex: 45,
@@ -203,81 +168,88 @@ export default function Navbar() {
                     color: pathname === '/mujer' ? 'var(--accent-terra)' : 'var(--text-main)',
                   }}
                 >
-                  Mujer
+                  Catálogo
                 </Link>
 
-                <Link
-                  href="/mujer/satin"
-                  style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                    color: pathname === '/mujer/satin' ? 'var(--accent-terra)' : 'var(--text-muted)',
-                  }}
-                >
-                  Satín Seda
-                </Link>
+                {categories.slice(0, 5).map((cat) => (
+                  <Link
+                    key={cat.id}
+                    href={`/mujer?categoria=${cat.slug}`}
+                    style={{
+                      fontSize: '0.82rem',
+                      fontWeight: 500,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: 'var(--text-main)',
+                    }}
+                  >
+                    {cat.name}
+                  </Link>
+                ))}
 
-                <Link
-                  href="/combos-regalo"
-                  style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                    color: 'var(--accent-terra)',
-                    backgroundColor: 'var(--accent-soft-pink)',
-                    padding: '0.25rem 0.65rem',
-                    borderRadius: '9999px',
-                  }}
-                >
-                  🎁 Regalos
-                </Link>
-
-                <Link
-                  href="/hombre"
-                  style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 500,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.06em',
-                    color: pathname === '/hombre' ? 'var(--accent-terra)' : 'var(--text-muted)',
-                  }}
-                >
-                  Hombre
-                </Link>
+                {collections.slice(0, 2).map((col) => (
+                  <Link
+                    key={col.id}
+                    href={`/mujer?coleccion=${col.slug}`}
+                    style={{
+                      fontSize: '0.82rem',
+                      fontWeight: 600,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.06em',
+                      color: 'var(--brand-dark, #1C1917)',
+                      backgroundColor: 'var(--brand-beige, #fdf6f0)',
+                      padding: '0.25rem 0.65rem',
+                      borderRadius: '9999px',
+                      border: '1px solid rgba(219, 187, 146, 0.4)',
+                    }}
+                  >
+                    {col.badge ? `${col.badge} ` : ''}{col.name}
+                  </Link>
+                ))}
               </div>
             </nav>
           </div>
 
-          {/* Logo Central Minimalista */}
-          <Link href="/" style={{ textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', textDecoration: 'none' }}>
-            <span
+          {/* Logo Central de Marca */}
+          <Link
+            href="/"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textDecoration: 'none',
+              padding: '0 0.5rem',
+            }}
+          >
+            {/* Logo Móvil Oficial: Imagen rectangular de la marca sin fondo */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/imagenes/logo_rectangular_sin_fondo.png"
+              alt="Lovely Night"
+              className="mobile-header-logo"
               style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: isScrolled ? '1.55rem' : '1.85rem',
-                fontWeight: 600,
-                letterSpacing: '0.04em',
-                color: '#1C1C1C',
-                lineHeight: 1,
-                transition: 'font-size 0.25s ease',
+                height: isScrolled ? '34px' : '40px',
+                width: 'auto',
+                maxWidth: '185px',
+                objectFit: 'contain',
+                transition: 'height 0.25s ease',
               }}
-            >
-              LOVELY NIGHT
-            </span>
-            <span
+            />
+
+            {/* Logo Desktop Oficial */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/imagenes/logo_rectangular_sin_fondo.png"
+              alt="Lovely Night"
+              className="desktop-header-logo"
               style={{
-                fontSize: '0.58rem',
-                letterSpacing: '0.28em',
-                textTransform: 'uppercase',
-                color: 'var(--text-muted)',
-                fontWeight: 500,
-                marginTop: '3px',
+                height: isScrolled ? '42px' : '50px',
+                width: 'auto',
+                maxWidth: '240px',
+                objectFit: 'contain',
+                transition: 'height 0.25s ease',
               }}
-            >
-              Medellín • Sleepwear
-            </span>
+            />
           </Link>
 
           {/* Lado Derecho: Buscador Interactivo & Carrito */}
@@ -340,16 +312,17 @@ export default function Navbar() {
                     position: 'absolute',
                     top: '2px',
                     right: '0px',
-                    backgroundColor: '#1C1C1C',
+                    backgroundColor: 'var(--brand-pink, #dc9d9d)',
                     color: '#FFFFFF',
                     borderRadius: '50%',
-                    width: '17px',
-                    height: '17px',
+                    width: '18px',
+                    height: '18px',
                     fontSize: '0.65rem',
                     fontWeight: 700,
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    boxShadow: '0 2px 6px rgba(220, 157, 157, 0.5)',
                   }}
                 >
                   {totalItems}
@@ -481,19 +454,28 @@ export default function Navbar() {
               overflowY: 'auto',
             }}
           >
-            {/* Encabezado: "Cerrar" + Botón X */}
+            {/* Encabezado: Logo Circular + Nombre + Botón X */}
             <div
               style={{
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'space-between',
-                padding: '1.15rem 1.4rem',
+                padding: '1rem 1.4rem',
                 borderBottom: '1px solid #EEEEEE',
+                backgroundColor: 'var(--brand-beige, #fdf6f0)',
               }}
             >
-              <span style={{ fontSize: '0.95rem', fontWeight: 500, color: '#1C1917' }}>
-                Cerrar
-              </span>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src="/imagenes/logo_circular_sin_fondo.png"
+                  alt="Lovely Night Medellín"
+                  style={{ width: '38px', height: '38px', objectFit: 'contain' }}
+                />
+                <span style={{ fontSize: '0.98rem', fontWeight: 600, color: '#1C1917', fontFamily: 'var(--font-serif)', letterSpacing: '0.04em' }}>
+                  LOVELY NIGHT
+                </span>
+              </div>
               <button
                 onClick={() => setIsMobileMenuOpen(false)}
                 style={{
@@ -501,7 +483,7 @@ export default function Navbar() {
                   border: 'none',
                   color: '#1C1917',
                   cursor: 'pointer',
-                  padding: '0.2rem',
+                  padding: '0.3rem',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -512,10 +494,82 @@ export default function Navbar() {
               </button>
             </div>
 
-            {/* Lista de Secciones con Acordeón (+) */}
+            {/* Lista de Secciones Dinámicas */}
             <nav style={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-              {mobileMenuStructure.map((section) => {
+              {/* Inicio */}
+              <div style={{ borderBottom: '1px solid #EEEEEE' }}>
+                <Link
+                  href="/"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '1.05rem 1.4rem',
+                    fontSize: '0.88rem',
+                    fontWeight: pathname === '/' ? 700 : 500,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    color: pathname === '/' ? 'var(--accent-terra)' : '#1C1917',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Home size={16} />
+                  <span>INICIO</span>
+                </Link>
+              </div>
+
+              {/* Catálogo Completo */}
+              <div style={{ borderBottom: '1px solid #EEEEEE' }}>
+                <Link
+                  href="/mujer"
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.6rem',
+                    padding: '1.05rem 1.4rem',
+                    fontSize: '0.88rem',
+                    fontWeight: pathname === '/mujer' ? 700 : 500,
+                    letterSpacing: '0.04em',
+                    textTransform: 'uppercase',
+                    color: pathname === '/mujer' ? 'var(--accent-terra)' : '#1C1917',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <Sparkles size={16} />
+                  <span>CATÁLOGO DE PRENDAS</span>
+                </Link>
+              </div>
+
+              {/* Categorías dinámicas desde DB */}
+              {dynamicMenuStructure.map((section) => {
                 const isOpen = openAccordion === section.id;
+                const hasSub = section.subItems && section.subItems.length > 1;
+
+                if (!hasSub) {
+                  return (
+                    <div key={section.id} style={{ borderBottom: '1px solid #EEEEEE' }}>
+                      <Link
+                        href={section.href}
+                        onClick={() => setIsMobileMenuOpen(false)}
+                        style={{
+                          display: 'block',
+                          padding: '1.05rem 1.4rem',
+                          fontSize: '0.88rem',
+                          fontWeight: 500,
+                          letterSpacing: '0.04em',
+                          textTransform: 'uppercase',
+                          color: '#1C1917',
+                          textDecoration: 'none',
+                        }}
+                      >
+                        {section.label}
+                      </Link>
+                    </div>
+                  );
+                }
+
                 return (
                   <div key={section.id} style={{ borderBottom: '1px solid #EEEEEE' }}>
                     <button
@@ -530,7 +584,7 @@ export default function Navbar() {
                         border: 'none',
                         cursor: 'pointer',
                         textAlign: 'left',
-                        color: section.id === 'sale' ? '#DC2626' : '#1C1917',
+                        color: '#1C1917',
                       }}
                     >
                       <span
@@ -554,7 +608,7 @@ export default function Navbar() {
                     {isOpen && (
                       <div
                         style={{
-                          backgroundColor: '#FAF8F5',
+                          backgroundColor: 'var(--brand-beige, #fdf6f0)',
                           padding: '0.5rem 1.4rem 1rem 1.75rem',
                           display: 'flex',
                           flexDirection: 'column',
@@ -588,28 +642,33 @@ export default function Navbar() {
                 );
               })}
 
-              {/* Ítems simples sin acordeón: HOMBRE */}
-              <div style={{ borderBottom: '1px solid #EEEEEE' }}>
-                <Link
-                  href="/hombre"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={{
-                    display: 'block',
-                    padding: '1.05rem 1.4rem',
-                    fontSize: '0.88rem',
-                    fontWeight: 500,
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    color: '#1C1917',
-                    textDecoration: 'none',
-                  }}
-                >
-                  HOMBRE
-                </Link>
-              </div>
+              {/* Colecciones especiales si existen en DB */}
+              {collections.map((col) => (
+                <div key={col.id} style={{ borderBottom: '1px solid #EEEEEE' }}>
+                  <Link
+                    href={`/mujer?coleccion=${col.slug}`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                      padding: '1.05rem 1.4rem',
+                      fontSize: '0.88rem',
+                      fontWeight: 500,
+                      letterSpacing: '0.04em',
+                      textTransform: 'uppercase',
+                      color: '#1C1917',
+                      textDecoration: 'none',
+                    }}
+                  >
+                    <span>{col.badge ? `${col.badge} ` : ''}{col.name}</span>
+                    <ChevronRight size={14} style={{ color: '#A8A29E' }} />
+                  </Link>
+                </div>
+              ))}
 
-              {/* INICIAR SESIÓN */}
-              <div style={{ borderBottom: '1px solid #EEEEEE' }}>
+              {/* ACCESO AL SISTEMA DE ADMINISTRACIÓN ERP */}
+              <div style={{ borderBottom: '1px solid #EEEEEE', marginTop: 'auto' }}>
                 <Link
                   href="/admin"
                   onClick={() => setIsMobileMenuOpen(false)}
@@ -619,42 +678,22 @@ export default function Navbar() {
                     gap: '0.6rem',
                     padding: '1.05rem 1.4rem',
                     fontSize: '0.88rem',
-                    fontWeight: 500,
+                    fontWeight: 600,
                     letterSpacing: '0.04em',
                     textTransform: 'uppercase',
-                    color: '#1C1917',
+                    color: 'var(--brand-dark, #1C1917)',
+                    backgroundColor: 'rgba(219, 187, 146, 0.15)',
                     textDecoration: 'none',
                   }}
                 >
-                  <span>INICIAR SESIÓN</span>
-                </Link>
-              </div>
-
-              {/* REGISTRARSE / PANEL ADMIN */}
-              <div style={{ borderBottom: '1px solid #EEEEEE' }}>
-                <Link
-                  href="/admin"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.6rem',
-                    padding: '1.05rem 1.4rem',
-                    fontSize: '0.88rem',
-                    fontWeight: 500,
-                    letterSpacing: '0.04em',
-                    textTransform: 'uppercase',
-                    color: '#1C1917',
-                    textDecoration: 'none',
-                  }}
-                >
-                  <span>REGISTRARSE</span>
+                  <User size={16} />
+                  <span>ADMINISTRAR TIENDA (ERP)</span>
                 </Link>
               </div>
             </nav>
 
             {/* Pie del menú con acceso directo a WhatsApp / Envíos */}
-            <div style={{ padding: '1.25rem 1.4rem', backgroundColor: '#FAF8F5', borderTop: '1px solid #EEEEEE' }}>
+            <div style={{ padding: '1.25rem 1.4rem', backgroundColor: 'var(--brand-beige, #fdf6f0)', borderTop: '1px solid #EEEEEE' }}>
               <span style={{ fontSize: '0.72rem', color: '#78716C', display: 'block', marginBottom: '0.35rem' }}>
                 Atención al cliente Medellín:
               </span>
@@ -695,7 +734,19 @@ export default function Navbar() {
         .search-result-row:hover {
           background-color: #F0EAE1 !important;
         }
+        .mobile-header-logo {
+          display: block;
+        }
+        .desktop-header-logo {
+          display: none;
+        }
         @media (min-width: 860px) {
+          .mobile-header-logo {
+            display: none !important;
+          }
+          .desktop-header-logo {
+            display: block !important;
+          }
           .desktop-left-nav {
             display: block !important;
           }

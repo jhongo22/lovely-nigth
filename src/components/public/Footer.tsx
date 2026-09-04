@@ -31,7 +31,7 @@ export default function Footer() {
             gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
             gap: '1.5rem',
             padding: '2rem',
-            backgroundColor: '#FAF8F5',
+            backgroundColor: '#fdf6f0',
             borderRadius: '16px',
             border: '1px solid rgba(28, 28, 28, 0.06)',
             marginBottom: '4rem',
@@ -77,7 +77,7 @@ export default function Footer() {
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
-                color: '#C2A676',
+                color: '#dbbb92',
                 flexShrink: 0,
               }}
             >
@@ -133,9 +133,17 @@ export default function Footer() {
         >
           {/* Columna Marca & Contacto */}
           <div>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.65rem', fontWeight: 700, color: '#1C1C1C', display: 'block', marginBottom: '0.5rem' }}>
-              LOVELY NIGHT
-            </span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.6rem' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/imagenes/logo_circular_sin_fondo.png"
+                alt="Lovely Night Medellín"
+                style={{ width: '44px', height: '44px', objectFit: 'contain' }}
+              />
+              <span style={{ fontFamily: 'var(--font-serif)', fontSize: '1.65rem', fontWeight: 700, color: '#1C1C1C' }}>
+                LOVELY NIGHT
+              </span>
+            </div>
             <p style={{ fontSize: '0.88rem', color: '#666666', lineHeight: 1.6, marginBottom: '1.25rem' }}>
               Boutique especializada en pijamas de satín seda, conjuntos en piel de durazno y prendas de descanso diseñadas para abrazar tus noches en Medellín.
             </p>

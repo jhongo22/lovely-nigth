@@ -44,23 +44,22 @@ export default function AdminProductosPage() {
   const [fabric, setFabric] = useState('Satín Seda');
   const [category, setCategory] = useState('pijamas-camiseras');
   const [collectionSlug, setCollectionSlug] = useState('satin-seda');
-  const [price, setPrice] = useState(89900);
-  const [comparePrice, setComparePrice] = useState<number | undefined>(110000);
-  const [costPrice, setCostPrice] = useState(32000);
-  const [packagingCost, setPackagingCost] = useState(4500);
+  const [price, setPrice] = useState(0);
+  const [comparePrice, setComparePrice] = useState<number | undefined>(undefined);
+  const [costPrice, setCostPrice] = useState(0);
+  const [packagingCost, setPackagingCost] = useState(0);
   const [productImages, setProductImages] = useState<string[]>([]);
   const [imagesText, setImagesText] = useState('');
   const [videoUrl, setVideoUrl] = useState('');
-  const [badgesText, setBadgesText] = useState('BESTSELLER');
+  const [badgesText, setBadgesText] = useState('');
   const [featured, setFeatured] = useState(true);
   const [isCombo, setIsCombo] = useState(false);
 
   // Matriz de Variantes de Stock (Talla, Color, Hex, SKU, Stock)
   const [variants, setVariants] = useState<ProductVariant[]>([
-    { size: 'S', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 15, sku: 'LN-SAT-ROSE-S' },
-    { size: 'M', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 20, sku: 'LN-SAT-ROSE-M' },
-    { size: 'L', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 12, sku: 'LN-SAT-ROSE-L' },
-    { size: 'M', colorName: 'Perla Champagne', colorHex: '#F3E5D8', stock: 18, sku: 'LN-SAT-PERL-M' },
+    { size: 'S', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
+    { size: 'M', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
+    { size: 'L', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
   ]);
 
   const resetForm = () => {
@@ -73,20 +72,20 @@ export default function AdminProductosPage() {
     setFabric('Satín Seda');
     setCategory('pijamas-camiseras');
     setCollectionSlug('satin-seda');
-    setPrice(89900);
-    setComparePrice(110000);
-    setCostPrice(32000);
-    setPackagingCost(4500);
+    setPrice(0);
+    setComparePrice(undefined);
+    setCostPrice(0);
+    setPackagingCost(0);
     setProductImages([]);
     setImagesText('');
     setVideoUrl('');
-    setBadgesText('BESTSELLER');
+    setBadgesText('');
     setFeatured(true);
     setIsCombo(false);
     setVariants([
-      { size: 'S', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 15, sku: 'LN-PROD-S' },
-      { size: 'M', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 20, sku: 'LN-PROD-M' },
-      { size: 'L', colorName: 'Rosa Seda', colorHex: '#E8A598', stock: 12, sku: 'LN-PROD-L' },
+      { size: 'S', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
+      { size: 'M', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
+      { size: 'L', colorName: 'Rosa', colorHex: '#E8A598', stock: 10, sku: '' },
     ]);
     setIsFormOpen(false);
     setEditingId(null);
@@ -159,7 +158,7 @@ export default function AdminProductosPage() {
     setVariants((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name) {
       alert('Por favor ingresa el nombre de la prenda.');
@@ -176,7 +175,7 @@ export default function AdminProductosPage() {
     const combinedImages = Array.from(new Set([...productImages, ...parsedTextImages]));
 
     const defaultImages = combinedImages.length > 0 ? combinedImages : [
-      'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=800'
+      '/imagenes/logo_circular_sin_fondo.png'
     ];
 
     const parsedDetails = detailsText
@@ -214,10 +213,11 @@ export default function AdminProductosPage() {
       isCombo,
     };
 
+    let createdProduct: Product | undefined;
     if (editingId) {
-      updateProduct(editingId, baseProductPayload);
+      await updateProduct(editingId, baseProductPayload);
     } else {
-      addProduct(baseProductPayload);
+      createdProduct = await addProduct(baseProductPayload);
     }
 
     // 2. Ejecutar generación de SEO Técnico con IA en segundo plano
@@ -237,10 +237,12 @@ export default function AdminProductosPage() {
       .then((data) => {
         if (data.success && data.seo) {
           // Si es edición o creación, actualizar con el SEO generado
-          const targetId = editingId || calculatedSlug;
-          updateProduct(targetId, {
-            seo: data.seo,
-          });
+          const targetId = editingId || createdProduct?.id;
+          if (targetId) {
+            updateProduct(targetId, {
+              seo: data.seo,
+            });
+          }
         }
       })
       .catch((err) => console.error('Error auto-generating SEO:', err));
@@ -648,7 +650,7 @@ export default function AdminProductosPage() {
                   <summary style={{ cursor: 'pointer', fontWeight: 600 }}>O pegar URLs manuales (Opcional)</summary>
                   <textarea
                     rows={3}
-                    placeholder="https://images.unsplash.com/photo-1...&#10;https://..."
+                    placeholder="https://ejemplo.com/foto1.jpg&#10;https://ejemplo.com/foto2.jpg"
                     value={imagesText}
                     onChange={(e) => {
                       setImagesText(e.target.value);
@@ -786,8 +788,8 @@ export default function AdminProductosPage() {
                     </span>
                   </div>
 
-                  {/* Precios */}
-                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem' }}>
+                  {/* Precios y Utilidad */}
+                  <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <strong style={{ fontSize: '1.05rem', color: '#1C1917', fontWeight: 800 }}>
                       ${p.price.toLocaleString('es-CO')}
                     </strong>
@@ -797,6 +799,11 @@ export default function AdminProductosPage() {
                       </span>
                     )}
                   </div>
+                  {p.costPrice > 0 && (
+                    <div style={{ fontSize: '0.73rem', color: '#047857', fontWeight: 700, marginTop: '0.2rem' }}>
+                      💰 Ganancia: +${(p.price - p.costPrice - (p.packagingCost || 0)).toLocaleString('es-CO')} COP ({(((p.price - p.costPrice - (p.packagingCost || 0)) / (p.price || 1)) * 100).toFixed(0)}%)
+                    </div>
+                  )}
                 </div>
 
                 {/* Botones de acción táctiles grandes para móvil */}
@@ -911,6 +918,11 @@ export default function AdminProductosPage() {
                     {p.comparePrice && (
                       <span style={{ fontSize: '0.75rem', color: '#9CA3AF', textDecoration: 'line-through', display: 'block' }}>
                         ${p.comparePrice.toLocaleString('es-CO')}
+                      </span>
+                    )}
+                    {p.costPrice > 0 && (
+                      <span style={{ fontSize: '0.72rem', color: '#047857', fontWeight: 700, display: 'block', marginTop: '2px' }}>
+                        +${(p.price - p.costPrice - (p.packagingCost || 0)).toLocaleString('es-CO')} ({(((p.price - p.costPrice - (p.packagingCost || 0)) / (p.price || 1)) * 100).toFixed(0)}%)
                       </span>
                     )}
                   </td>

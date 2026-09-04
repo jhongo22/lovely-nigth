@@ -10,7 +10,7 @@ export const metadata = {
 
 export default function PoliticasPage() {
   return (
-    <div style={{ backgroundColor: '#FAF8F5', minHeight: '80vh', padding: '3.5rem 0' }}>
+    <div style={{ backgroundColor: '#fdf6f0', minHeight: '80vh', padding: '3.5rem 0' }}>
       <div className="container" style={{ maxWidth: '840px' }}>
         <Link
           href="/"
@@ -54,7 +54,7 @@ export default function PoliticasPage() {
             {/* SECCIÓN 1: CAMBIOS DE TALLA */}
             <section style={{ borderBottom: '1px solid #F3F4F6', paddingBottom: '1.75rem' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '0.75rem' }}>
-                <div style={{ width: '38px', height: '38px', borderRadius: '10px', backgroundColor: '#FAF0ED', color: 'var(--accent-terra)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div style={{ width: '38px', height: '38px', borderRadius: '10px', backgroundColor: '#faebea', color: 'var(--accent-terra)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                   <RefreshCw size={20} />
                 </div>
                 <h2 style={{ fontSize: '1.25rem', fontWeight: 700, color: '#1C1917', margin: 0 }}>
@@ -129,7 +129,7 @@ export default function PoliticasPage() {
           <div
             style={{
               marginTop: '3rem',
-              backgroundColor: '#FAF8F5',
+              backgroundColor: '#fdf6f0',
               borderRadius: '16px',
               padding: '1.75rem',
               border: '1px solid #E7E5E0',

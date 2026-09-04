@@ -51,10 +51,10 @@ export const metadata: Metadata = {
       'Descubre la suavidad y elegancia de nuestras pijamas camiseras en satín seda y piel de durazno. Envíos a todo Colombia con Pago Contraentrega.',
     images: [
       {
-        url: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop',
-        width: 1200,
-        height: 630,
-        alt: 'Pijamas de Satín Seda Lovely Night',
+        url: 'https://lovelynight.com.co/imagenes/logo_circular_sin_fondo.png',
+        width: 600,
+        height: 600,
+        alt: 'Lovely Night Sleepwear Medellín',
       },
     ],
   },
@@ -63,10 +63,14 @@ export const metadata: Metadata = {
     title: 'Lovely Night | Pijamas de Satín Seda y Loungewear',
     description:
       'Pijamas suaves y elegantes para tus noches de descanso en Medellín y Colombia.',
-    images: ['https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=1200&auto=format&fit=crop'],
+    images: ['https://lovelynight.com.co/imagenes/logo_circular_sin_fondo.png'],
   },
   alternates: {
     canonical: 'https://lovelynight.com.co',
+  },
+  icons: {
+    icon: '/imagenes/logo_circular_sin_fondo.png',
+    apple: '/imagenes/logo_circular_sin_fondo.png',
   },
 };
 

@@ -87,11 +87,16 @@ export default function BundleBuilder() {
     window.open(url, '_blank');
   };
 
+  // Si no hay productos en la tienda aún, no renderizar el bundle builder
+  if (!p1) {
+    return null;
+  }
+
   return (
     <section
       style={{
         padding: '4rem 0',
-        backgroundColor: '#FAF8F5',
+        backgroundColor: '#fdf6f0',
         borderBottom: '1px solid rgba(28, 28, 28, 0.08)',
       }}
     >
@@ -145,128 +150,119 @@ export default function BundleBuilder() {
             marginBottom: '2rem',
           }}
         >
-          {packs.map((p) => {
-            const isSelected = selectedPack === p.id;
+          {packs.map((pack) => {
+            const isSelected = selectedPack === pack.id;
             return (
               <div
-                key={p.id}
-                onClick={() => setSelectedPack(p.id as any)}
+                key={pack.id}
+                onClick={() => setSelectedPack(pack.id as 'trio' | 'duo')}
                 style={{
-                  position: 'relative',
-                  backgroundColor: isSelected ? '#FFFFFF' : '#F7F5F0',
-                  border: isSelected ? '2.5px solid #1C1917' : '1.5px solid #E5E7EB',
+                  padding: '1.5rem',
                   borderRadius: '16px',
-                  padding: '1.75rem 1.5rem',
+                  backgroundColor: '#FFFFFF',
+                  border: isSelected ? '2px solid #1C1C1C' : '1px solid #E5E7EB',
+                  boxShadow: isSelected ? '0 8px 24px rgba(0,0,0,0.08)' : 'none',
                   cursor: 'pointer',
+                  position: 'relative',
                   transition: 'all 0.2s ease',
-                  boxShadow: isSelected ? '0 10px 30px rgba(0,0,0,0.08)' : 'none',
-                  transform: isSelected ? 'translateY(-3px)' : 'none',
                 }}
               >
                 {/* Badge flotante */}
-                <div
+                <span
                   style={{
-                    position: 'absolute',
-                    top: '-12px',
-                    left: '16px',
-                    backgroundColor: isSelected ? '#1C1917' : '#78716C',
-                    color: '#FFFFFF',
-                    fontSize: '0.68rem',
+                    display: 'inline-block',
+                    fontSize: '0.7rem',
                     fontWeight: 800,
-                    letterSpacing: '0.06em',
-                    padding: '3px 10px',
+                    letterSpacing: '0.05em',
+                    padding: '0.25rem 0.65rem',
                     borderRadius: '9999px',
-                    textTransform: 'uppercase',
+                    backgroundColor: isSelected ? '#1C1C1C' : '#F3F4F6',
+                    color: isSelected ? '#FFFFFF' : '#4B5563',
+                    marginBottom: '0.75rem',
                   }}
                 >
-                  {p.badge}
-                </div>
+                  {pack.badge}
+                </span>
 
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginTop: '0.25rem' }}>
-                  <div>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1C1917', margin: 0 }}>
-                      {p.title}
-                    </h3>
-                    <span style={{ fontSize: '0.8rem', color: '#78716C' }}>{p.subtitle}</span>
-                  </div>
+                <h3 style={{ fontSize: '1.2rem', fontWeight: 700, color: '#1C1917', margin: '0 0 0.35rem 0' }}>
+                  {pack.title}
+                </h3>
+                <p style={{ fontSize: '0.85rem', color: '#6B7280', margin: '0 0 1rem 0' }}>{pack.subtitle}</p>
 
-                  <span
-                    style={{
-                      backgroundColor: '#DCFCE7',
-                      color: '#15803D',
-                      fontSize: '0.72rem',
-                      fontWeight: 800,
-                      padding: '3px 8px',
-                      borderRadius: '6px',
-                      whiteSpace: 'nowrap',
-                    }}
-                  >
-                    {p.tag}
+                {/* Precios */}
+                <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', marginBottom: '0.75rem' }}>
+                  <span style={{ fontSize: '1.65rem', fontWeight: 800, color: '#1C1C1C' }}>
+                    ${pack.price.toLocaleString('es-CO')}
+                  </span>
+                  <span style={{ fontSize: '0.95rem', color: '#9CA3AF', textDecoration: 'line-through' }}>
+                    ${pack.oldPrice.toLocaleString('es-CO')}
+                  </span>
+                  <span style={{ fontSize: '0.78rem', fontWeight: 700, color: '#15803D', backgroundColor: '#DCFCE7', padding: '0.2rem 0.5rem', borderRadius: '6px' }}>
+                    {pack.tag}
                   </span>
                 </div>
 
-                {/* Precios visuales con alto contraste */}
-                <div style={{ margin: '1.25rem 0', display: 'flex', alignItems: 'baseline', gap: '0.65rem' }}>
-                  <span style={{ fontSize: '2.1rem', fontWeight: 900, color: '#1C1917', fontFamily: 'var(--font-sans)' }}>
-                    ${p.price.toLocaleString('es-CO')}
-                  </span>
-                  <span style={{ fontSize: '1rem', color: '#9CA3AF', textDecoration: 'line-through' }}>
-                    ${p.oldPrice.toLocaleString('es-CO')}
-                  </span>
-                  <span style={{ fontSize: '0.8rem', fontWeight: 700, color: '#059669', marginLeft: 'auto' }}>
-                    {p.unitPrice}
-                  </span>
-                </div>
+                <span style={{ fontSize: '0.8rem', color: '#57534E', fontWeight: 600, display: 'block', marginBottom: '1.25rem' }}>
+                  Sale a solo <strong style={{ color: '#1C1917' }}>{pack.unitPrice}</strong> cada pijama
+                </span>
 
-                {/* Beneficios clave con chulitos */}
-                <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', borderTop: '1px solid #F3F4F6', paddingTop: '1rem' }}>
-                  {p.perks.map((perk, idx) => (
-                    <div key={idx} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: '#44403C' }}>
-                      <Check size={14} style={{ color: '#16A34A', flexShrink: 0 }} />
+                {/* Beneficios */}
+                <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 1.25rem 0', display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
+                  {pack.perks.map((perk, i) => (
+                    <li key={i} style={{ fontSize: '0.8rem', color: '#4B5563', display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
+                      <Check size={14} style={{ color: '#15803D', flexShrink: 0 }} strokeWidth={2.5} />
                       <span>{perk}</span>
-                    </div>
+                    </li>
                   ))}
+                </ul>
+
+                {/* Botón selector */}
+                <div
+                  style={{
+                    width: '100%',
+                    padding: '0.7rem',
+                    textAlign: 'center',
+                    borderRadius: '8px',
+                    fontSize: '0.85rem',
+                    fontWeight: 700,
+                    backgroundColor: isSelected ? '#1C1C1C' : '#F3F4F6',
+                    color: isSelected ? '#FFFFFF' : '#374151',
+                    transition: 'all 0.2s',
+                  }}
+                >
+                  {isSelected ? '✓ Paquete Seleccionado' : 'Elegir este Paquete'}
                 </div>
               </div>
             );
           })}
         </div>
 
-        {/* VISTA PREVIA VISUAL DE PRENDAS INCLUIDAS */}
+        {/* PRENDAS INCLUIDAS EN ESTA OFERTA */}
         <div
           style={{
             backgroundColor: '#FFFFFF',
             borderRadius: '16px',
             border: '1px solid #E5E7EB',
             padding: '1.5rem',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '1.25rem',
-            boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
+            marginBottom: '2rem',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-            <span style={{ fontSize: '0.85rem', fontWeight: 800, textTransform: 'uppercase', color: '#1C1917', letterSpacing: '0.06em' }}>
-              👗 Prendas de referencia en tu paquete:
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, textTransform: 'uppercase', letterSpacing: '0.05em', color: '#1C1917' }}>
+              Prendas combinadas en tu paquete ({current.itemsCount} unidades):
             </span>
-            <span style={{ fontSize: '0.78rem', color: '#15803D', fontWeight: 700 }}>
-              ✓ Confección premium 100% Medellín
+            <span style={{ fontSize: '0.75rem', color: '#6B7280' }}>
+              * Puedes coordinar tallas exactas al confirmar por WhatsApp
             </span>
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: `repeat(${selectedPack === 'trio' ? 3 : 2}, 1fr)`,
-              gap: '1rem',
-            }}
-          >
-            {(selectedPack === 'trio' ? [p1, p2, p3] : [p1, p2]).map((item, idx) => (
+          <div style={{ display: 'grid', gridTemplateColumns: `repeat(auto-fit, minmax(180px, 1fr))`, gap: '1rem' }}>
+            {(current.itemsCount === 3 ? [p1, p2, p3] : [p1, p2]).map((item, idx) => (
               <div
                 key={idx}
                 style={{
                   borderRadius: '10px',
-                  backgroundColor: '#FAF8F5',
+                  backgroundColor: '#fdf6f0',
                   overflow: 'hidden',
                   border: '1px solid #E5E7EB',
                   display: 'flex',
@@ -276,7 +272,7 @@ export default function BundleBuilder() {
                 <div style={{ aspectRatio: '1 / 1.15', overflow: 'hidden', backgroundColor: '#EDEAE4' }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
-                    src={item.images?.[0] || 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600'}
+                    src={item.images?.[0] || '/imagenes/logo_circular_sin_fondo.png'}
                     alt={item.name}
                     style={{ width: '100%', height: '100%', objectFit: 'cover' }}
                   />

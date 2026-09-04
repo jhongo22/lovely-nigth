@@ -12,7 +12,12 @@ interface CategoriesCarouselProps {
 export default function CategoriesCarousel({ categories }: CategoriesCarouselProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [currentIndex, setCurrentIndex] = useState(1);
-  const total = categories.length || 6;
+
+  if (!categories || categories.length === 0) {
+    return null;
+  }
+
+  const total = categories.length;
 
   const handleScroll = () => {
     if (!scrollRef.current) return;
@@ -122,17 +127,41 @@ export default function CategoriesCarousel({ categories }: CategoriesCarouselPro
                   }}
                 >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={cat.image}
-                    alt={cat.name}
-                    style={{
-                      width: '100%',
-                      height: '100%',
-                      objectFit: 'cover',
-                      transition: 'transform 0.4s ease',
-                    }}
-                    className="cat-card-img"
-                  />
+                  {cat.image ? (
+                    <img
+                      src={cat.image}
+                      alt={cat.name}
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        objectFit: 'cover',
+                        transition: 'transform 0.4s ease',
+                      }}
+                      className="cat-card-img"
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        width: '100%',
+                        height: '100%',
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        backgroundColor: '#fdf6f0',
+                        padding: '1.5rem',
+                      }}
+                    >
+                      <img
+                        src="/imagenes/logo_circular_sin_fondo.png"
+                        alt={cat.name}
+                        style={{ width: '80px', height: '80px', objectFit: 'contain', opacity: 0.9 }}
+                      />
+                      <span style={{ fontSize: '0.72rem', fontWeight: 700, color: 'var(--brand-pink, #dc9d9d)', marginTop: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+                        {cat.fabric || 'Colección'}
+                      </span>
+                    </div>
+                  )}
                 </div>
 
                 {/* Pie de Tarjeta Minimalista: Título en Serif con Flecha -> */}

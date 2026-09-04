@@ -27,7 +27,7 @@ export default function ConversionBanner({ type, title, subtitle }: ConversionBa
 
   if (type === 'image-lifestyle') {
     return (
-      <section style={{ padding: '4rem 0', backgroundColor: '#FAF8F5' }}>
+      <section style={{ padding: '4rem 0', backgroundColor: '#fdf6f0' }}>
         <div className="container">
           <div
             style={{
@@ -42,18 +42,27 @@ export default function ConversionBanner({ type, title, subtitle }: ConversionBa
               boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
             }}
           >
-            {/* Lado Imagen Lifestyle */}
-            <div style={{ height: '380px', position: 'relative' }}>
+            {/* Lado Imagen Lifestyle / Marca */}
+            <div
+              style={{
+                height: '380px',
+                position: 'relative',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: 'var(--brand-beige, #fdf6f0)',
+                padding: '2rem',
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=900&auto=format&fit=crop"
-                alt="Noches de Satín Seda Lovely Night"
-                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-              />
-              <div
+                src="/imagenes/logo_circular_sin_fondo.png"
+                alt="Lovely Night Medellín"
                 style={{
-                  position: 'absolute',
-                  inset: 0,
-                  background: 'linear-gradient(to right, rgba(0,0,0,0.4) 0%, transparent 80%)',
+                  maxHeight: '260px',
+                  width: 'auto',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 8px 24px rgba(220, 157, 157, 0.25))',
                 }}
               />
             </div>
@@ -106,7 +115,7 @@ export default function ConversionBanner({ type, title, subtitle }: ConversionBa
 
   if (type === 'urgent-whatsapp') {
     return (
-      <section style={{ padding: '3rem 0', backgroundColor: '#FAF8F5' }}>
+      <section style={{ padding: '3rem 0', backgroundColor: '#fdf6f0' }}>
         <div className="container">
           <div
             style={{

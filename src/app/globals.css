@@ -1,27 +1,44 @@
 :root {
   /* 
    * HIGH-END SLEEPWEAR DESIGN SYSTEM (Estilo Boutique Femenina & Delicada)
-   * Formas ovaladas/suaves, paleta marfil, seda y terracota suave.
+   * Paleta Oficial Lovely Night:
+   * Rosado: #dc9d9d
+   * Blanco estilo color hueso o beish: #fdf6f0
+   * Dorado: #dbbb92
    */
-  --bg-main: #FAF8F5;          /* Marfil crema suave */
+  --bg-main: #fdf6f0;          /* Blanco estilo color hueso o beish */
   --bg-white: #FFFFFF;
-  --bg-subtle: #F4EFEA;        /* Fondo cálido para cards y secciones */
+  --bg-subtle: #f8efe7;        /* Tono beige cálido para cards y secciones */
+  --bg-secondary: #fdf6f0;
+  --bg-muted: #f4e8dc;
   --bg-dark: #1A1A1A;
 
   --text-main: #1C1C1C;        /* Carbón profundo nítido */
   --text-muted: #66635F;       /* Gris tierra elegante */
   --text-light: #9E9B95;
+  --text-primary: #1C1C1C;
+  --text-secondary: #66635F;
 
-  /* Acentos de marca delicados */
-  --accent-terra: #C27D6E;     /* Rose Terracotta delicado */
-  --accent-terra-hover: #A96658;
-  --accent-sand: #DFD3C3;      /* Arena sedosa */
-  --accent-gold: #C2A676;      /* Dorado champaña */
-  --accent-soft-pink: #F8ECE8;
+  /* Colores Oficiales de Marca */
+  --brand-pink: #dc9d9d;       /* Rosado oficial marca */
+  --brand-pink-hover: #c98888;
+  --brand-beige: #fdf6f0;      /* Blanco estilo hueso / beish */
+  --brand-gold: #dbbb92;       /* Dorado oficial marca */
+  --brand-gold-hover: #caa77d;
+
+  /* Acentos de marca */
+  --accent-terra: #dc9d9d;     /* Rosado de marca */
+  --accent-terra-hover: #c98888;
+  --accent-rose: #dc9d9d;
+  --accent-rose-dark: #c98888;
+  --accent-sand: #dbbb92;      /* Dorado de marca */
+  --accent-gold: #dbbb92;      /* Dorado de marca */
+  --accent-soft-pink: #faebea; /* Rosado tenue pastel */
 
   /* Bordes y Sombras Suaves */
   --border-hairline: 1px solid rgba(28, 28, 28, 0.08);
-  --border-soft: 1px solid rgba(194, 125, 110, 0.2);
+  --border-soft: 1px solid rgba(220, 157, 157, 0.35);
+  --border-gold: 1px solid rgba(219, 187, 146, 0.4);
 
   --shadow-subtle: 0 4px 16px rgba(0, 0, 0, 0.04);
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.06);
@@ -113,10 +130,10 @@ img {
 }
 
 .btn-boutique-pill:hover {
-  background-color: var(--accent-terra);
-  border-color: var(--accent-terra);
+  background-color: var(--brand-pink);
+  border-color: var(--brand-pink);
   transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(194, 125, 110, 0.35);
+  box-shadow: 0 8px 20px rgba(220, 157, 157, 0.4);
 }
 
 .btn-boutique-pill:active {
@@ -152,21 +169,45 @@ img {
   align-items: center;
   justify-content: center;
   gap: 0.6rem;
-  background-color: var(--accent-terra);
+  background-color: var(--brand-pink);
   color: #FFFFFF;
   padding: 0.9rem 2.2rem;
   font-size: 0.85rem;
   font-weight: 600;
   letter-spacing: 0.05em;
   border-radius: 9999px;
-  border: 1.5px solid var(--accent-terra);
-  box-shadow: 0 4px 14px rgba(194, 125, 110, 0.3);
+  border: 1.5px solid var(--brand-pink);
+  box-shadow: 0 4px 14px rgba(220, 157, 157, 0.35);
   transition: all 0.25s ease;
 }
 
 .btn-boutique-pill-rose:hover {
-  background-color: var(--accent-terra-hover);
-  border-color: var(--accent-terra-hover);
+  background-color: var(--brand-pink-hover);
+  border-color: var(--brand-pink-hover);
+  transform: translateY(-2px);
+}
+
+/* Botón Dorado Luxe */
+.btn-boutique-pill-gold {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background-color: var(--brand-gold);
+  color: #1C1C1C;
+  padding: 0.9rem 2.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  border-radius: 9999px;
+  border: 1.5px solid var(--brand-gold);
+  box-shadow: 0 4px 14px rgba(219, 187, 146, 0.35);
+  transition: all 0.25s ease;
+}
+
+.btn-boutique-pill-gold:hover {
+  background-color: var(--brand-gold-hover);
+  border-color: var(--brand-gold-hover);
   transform: translateY(-2px);
 }
 
@@ -186,15 +227,15 @@ img {
 }
 
 .badge-delicate-gold {
-  background-color: #FAF5EE;
-  color: #926E35;
-  border: 1px solid rgba(146, 110, 53, 0.25);
+  background-color: #FAF2EB;
+  color: #8C6A35;
+  border: 1px solid rgba(219, 187, 146, 0.45);
 }
 
 .badge-delicate-sale {
-  background-color: #FDF0ED;
-  color: var(--accent-terra);
-  border: 1px solid rgba(194, 125, 110, 0.3);
+  background-color: #faebea;
+  color: var(--brand-pink);
+  border: 1px solid rgba(220, 157, 157, 0.4);
 }
 
 /* Mobile Friendly Utilities */

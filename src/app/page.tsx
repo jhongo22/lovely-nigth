@@ -43,36 +43,6 @@ export default function HomePage() {
     },
   ];
 
-  const testimonials = [
-    {
-      name: 'Mariana Restrepo',
-      city: 'El Poblado, Medellín',
-      rating: 5,
-      comment: 'La calidad del satín es increíble, no se siente plástica como otras marcas y la caída es hermosa. Me llegó al día siguiente con pago contraentrega.',
-      userAvatar: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600&auto=format&fit=crop',
-      itemBought: 'Pijama Camisera Satín Seda Rose Luxe',
-    },
-    {
-      name: 'Valentina Gómez',
-      city: 'Laureles, Medellín',
-      rating: 5,
-      comment: 'Compré la Box de Regalo para el cumpleaños de mi hermana y quedó fascinada con la presentación de la caja y el antifaz. Súper recomendadas.',
-      userAvatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=600&auto=format&fit=crop',
-      itemBought: 'Box Regalo "Ritual de Noche" Lovely Luxe',
-    },
-    {
-      name: 'Camila Jaramillo',
-      city: 'Envigado',
-      rating: 5,
-      comment: 'La tela piel de durazno es súper suave y fresca para el calor. La atención por WhatsApp fue impecable para elegir mi talla.',
-      userAvatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?q=80&w=200&auto=format&fit=crop',
-      productPhoto: 'https://images.unsplash.com/photo-1583744946564-b52ac1c389c8?q=80&w=600&auto=format&fit=crop',
-      itemBought: 'Set Short & Camisilla Coquette Durazno',
-    },
-  ];
-
   const homeSchema = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -81,7 +51,7 @@ export default function HomePage() {
         '@id': 'https://lovelynight.com.co/#organization',
         name: 'Lovely Night Sleepwear',
         url: 'https://lovelynight.com.co',
-        logo: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=600',
+        logo: 'https://lovelynight.com.co/imagenes/logo_circular_sin_fondo.png',
         description: 'Boutique de pijamas en satín seda y loungewear de confección local en Medellín.',
         address: {
           '@type': 'PostalAddress',
@@ -104,28 +74,59 @@ export default function HomePage() {
       <CategoriesCarousel categories={categories} />
 
       {/* 3. PRODUCTOS MÁS VENDIDOS */}
-      <section style={{ padding: '4.5rem 0', backgroundColor: '#FAF8F5', borderBottom: '1px solid rgba(28, 28, 28, 0.08)' }}>
+      <section style={{ padding: '4.5rem 0', backgroundColor: '#fdf6f0', borderBottom: '1px solid rgba(28, 28, 28, 0.08)' }}>
         <div className="container">
           <div style={{ textAlign: 'center', maxWidth: '600px', margin: '0 auto 3rem auto' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
-              Favoritos de la Tienda
+              Catálogo de Prendas
             </span>
             <h2 style={{ fontSize: '2.2rem', marginTop: '0.35rem', color: '#1C1917' }}>
-              Las Pijamas Más Pedidas
+              Nuestras Prendas
             </h2>
           </div>
 
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
-              gap: '1.75rem',
-            }}
-          >
-            {featuredProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
+          {featuredProducts.length > 0 ? (
+            <div
+              style={{
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+                gap: '1.75rem',
+              }}
+            >
+              {featuredProducts.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          ) : (
+            <div
+              style={{
+                textAlign: 'center',
+                padding: '3.5rem 1.5rem',
+                backgroundColor: '#FFFFFF',
+                borderRadius: '16px',
+                border: '1px solid rgba(28, 28, 28, 0.06)',
+                maxWidth: '520px',
+                margin: '0 auto',
+              }}
+            >
+              <span style={{ fontSize: '2.2rem', display: 'block', marginBottom: '0.5rem' }}>🌙</span>
+              <h3 style={{ fontSize: '1.25rem', fontWeight: 600, color: '#1C1C1C', marginBottom: '0.4rem' }}>
+                Próximamente Nueva Colección
+              </h3>
+              <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '1.5rem', lineHeight: 1.5 }}>
+                Estamos preparando y subiendo las nuevas prendas exclusivas en satín seda y piel de durazno.
+              </p>
+              <a
+                href="https://wa.me/573000000000?text=Hola%20Lovely%20Night,%20quiero%20conocer%20la%20nueva%20colección"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn-boutique-pill"
+                style={{ display: 'inline-flex' }}
+              >
+                Preguntar por WhatsApp
+              </a>
+            </div>
+          )}
         </div>
       </section>
 
@@ -140,99 +141,11 @@ export default function HomePage() {
       {/* 6. CTA DISPERSO #2: BANNER URGENTE DE WHATSAPP */}
       <ConversionBanner type="urgent-whatsapp" />
 
-      {/* 7. TESTIMONIOS CON FOTOS REALES */}
-      <section style={{ padding: '5rem 0', backgroundColor: '#FFFFFF', borderBottom: '1px solid rgba(28, 28, 28, 0.08)' }}>
-        <div className="container">
-          <div style={{ textAlign: 'center', maxWidth: '640px', margin: '0 auto 3.5rem auto' }}>
-            <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-terra)' }}>
-              Opiniones & Fotos Reales de Clientas
-            </span>
-            <h2 style={{ fontSize: '2.2rem', marginTop: '0.35rem', color: '#1C1917' }}>
-              Fotos reales de entregas en Medellín
-            </h2>
-          </div>
-
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-              gap: '2rem',
-            }}
-          >
-            {testimonials.map((t, idx) => (
-              <div
-                key={idx}
-                style={{
-                  backgroundColor: '#FAF8F5',
-                  borderRadius: '20px',
-                  overflow: 'hidden',
-                  border: '1px solid rgba(28, 28, 28, 0.08)',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  boxShadow: '0 4px 16px rgba(0,0,0,0.03)',
-                }}
-              >
-                {/* Foto Real de la Prenda */}
-                <div style={{ position: 'relative', height: '220px', overflow: 'hidden', backgroundColor: '#E5E2DC' }}>
-                  <img
-                    src={t.productPhoto}
-                    alt={t.itemBought}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                  />
-                  <div
-                    style={{
-                      position: 'absolute',
-                      bottom: '10px',
-                      left: '10px',
-                      backgroundColor: 'rgba(28, 28, 28, 0.85)',
-                      backdropFilter: 'blur(6px)',
-                      color: '#FFFFFF',
-                      padding: '0.3rem 0.75rem',
-                      borderRadius: '9999px',
-                      fontSize: '0.72rem',
-                      fontWeight: 600,
-                    }}
-                  >
-                    🛍️ {t.itemBought}
-                  </div>
-                </div>
-
-                {/* Comentario y Perfil */}
-                <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
-                  <div>
-                    <div style={{ display: 'flex', gap: '3px', color: '#F59E0B', marginBottom: '0.65rem' }}>
-                      {[...Array(t.rating)].map((_, i) => (
-                        <Star key={i} size={15} fill="#F59E0B" />
-                      ))}
-                    </div>
-                    <p style={{ fontSize: '0.92rem', color: '#333333', lineHeight: 1.6, fontStyle: 'italic', marginBottom: '1.25rem' }}>
-                      "{t.comment}"
-                    </p>
-                  </div>
-
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', paddingTop: '1rem', borderTop: '1px solid rgba(28, 28, 28, 0.08)' }}>
-                    <img
-                      src={t.userAvatar}
-                      alt={t.name}
-                      style={{ width: '42px', height: '42px', borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--accent-terra)' }}
-                    />
-                    <div>
-                      <h4 style={{ fontSize: '0.92rem', fontWeight: 700, color: '#1C1917' }}>{t.name}</h4>
-                      <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>📍 {t.city} • Compradora Verificada ✓</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* 8. CTA DISPERSO #3: GARANTÍA & CONFIANZA */}
+      {/* 7. CTA DISPERSO #3: GARANTÍA & CONFIANZA */}
       <ConversionBanner type="minimal-solid" />
 
       {/* 9. ACORDEÓN DE PREGUNTAS FRECUENTES */}
-      <section style={{ padding: '5rem 0', backgroundColor: '#FAF8F5' }}>
+      <section style={{ padding: '5rem 0', backgroundColor: '#fdf6f0' }}>
         <div className="container" style={{ maxWidth: '820px' }}>
           <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>

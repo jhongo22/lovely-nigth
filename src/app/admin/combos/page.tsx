@@ -19,7 +19,7 @@ export default function AdminCombosPage() {
   const [comparePrice, setComparePrice] = useState(175000);
   const [costPrice, setCostPrice] = useState(52000);
   const [packagingCost, setPackagingCost] = useState(9500);
-  const [imageUrl, setImageUrl] = useState('https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800');
+  const [imageUrl, setImageUrl] = useState('');
   const [fabric, setFabric] = useState<Product['fabric']>('Satín Seda');
 
   const combosList = products.filter((p) => p.isCombo || p.subCategory === 'box-regalo');
@@ -31,7 +31,7 @@ export default function AdminCombosPage() {
     setComparePrice(175000);
     setCostPrice(52000);
     setPackagingCost(9500);
-    setImageUrl('https://images.unsplash.com/photo-1549465220-1a8b9238cd48?q=80&w=800');
+    setImageUrl('');
     setFabric('Satín Seda');
     setIsFormOpen(false);
     setEditingId(null);
@@ -269,6 +269,17 @@ export default function AdminCombosPage() {
                 />
               </div>
             </div>
+
+            {price > 0 && (
+              <div style={{ padding: '0.75rem 1rem', backgroundColor: '#ECFDF5', borderRadius: '8px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
+                <span style={{ fontSize: '0.85rem', color: '#065F46', fontWeight: 700 }}>
+                  💰 Utilidad Neta Real: ${(price - costPrice - packagingCost).toLocaleString('es-CO')} COP por combo
+                </span>
+                <span style={{ fontSize: '0.8rem', color: '#047857', fontWeight: 800 }}>
+                  Margen Operativo: {(((price - costPrice - packagingCost) / (price || 1)) * 100).toFixed(1)}%
+                </span>
+              </div>
+            )}
 
             {/* FOTO CON SUPABASE STORAGE */}
             <div>
